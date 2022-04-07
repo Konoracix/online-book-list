@@ -2,14 +2,17 @@ require('dotenv').config()
 
 module.exports = {
   development: {
-    client: 'mysql',
+    client: 'pg',
     connection: {
-      database: process.env.MYSQL_DB,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD 
+      database: process.env.POSTGRES_DB,
+      user: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD 
     },
     migrations: {
         directory: './db/migrations',
     },
+		seeds: {
+				directory: './db/seeds',
+		},
   },
 };
