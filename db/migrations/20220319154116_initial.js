@@ -17,10 +17,11 @@ exports.up = async (knex) => {
 		table.increments().notNullable();
 		stringTable(table, 'title').notNullable();
 		references(table, tableNames.authorList, 'author_id');
-		// table.integer('author_id').unsigned().references('id').inTable(tableNames.authorList).onDelete('cascade').notNullable();
 		table.datetime('updated_at', { useTz: false }).notNullable();
 		table.datetime('deleted_at', { useTz: false }).defaultTo(null);
 	});
+
+	await knex.schema.createTable()
 };
 
 exports.down = async (knex) => {
