@@ -1,6 +1,7 @@
 require('dotenv').config({path: '../../.env'});
 const orderedTableNames = require('../../src/constants/ordaredTableNames');
 const tableNames = require('../../src/constants/tableNames');
+const { getAuthor } = require('../../src/lib/seedUtils');
 
 /**
  * @param { import("knex").Knex } knex
@@ -13,13 +14,10 @@ exports.seed = async function(knex) {
 	await knex(element).del();
 	});
 	
-	const author = {
-		name: 'wojciech',
-		surname: 'drewniak'
-	}
-
-	const createdAuthor = await knex(tableNames.authorList)
-		.insert(author)
+	for(let i = 0; i < 25; i++){
+		const createdAuthor = await knex(tableNames.authorList)
+		.insert(getAuthor())
 		.returning('*');
-	console.log('Author created:', createdAuthor);
+		console.log('Author created:', createdAuthor);
+	}
 };

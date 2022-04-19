@@ -20,8 +20,6 @@ exports.up = async (knex) => {
 		table.datetime('updated_at', { useTz: false }).notNullable();
 		table.datetime('deleted_at', { useTz: false }).defaultTo(null);
 	});
-
-	await knex.schema.createTable()
 };
 
 exports.down = async (knex) => {
