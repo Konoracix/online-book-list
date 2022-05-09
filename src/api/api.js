@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const authors = require('./author/author.routes');
+const books = require('./book/book.routes')
+const auth = require('./auth/auth.routes');
 
 router.get('/', (req, res) => {
 	res.json({
@@ -10,5 +12,7 @@ router.get('/', (req, res) => {
 });
 
 router.use('/author', authors);
+router.use('/book', books);
+router.use('/auth', auth);
 
 module.exports = router;

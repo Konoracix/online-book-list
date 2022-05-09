@@ -2,8 +2,6 @@ require('dotenv').config();
 
 const app = require('./app');
 
-console.log(process.env.PORT);
-
 const port = process.env.PORT || 5050;
 
 

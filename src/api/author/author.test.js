@@ -1,5 +1,4 @@
 const express = require('express');
-const { idleTimeoutMillis } = require('pg/lib/defaults');
 const supertest = require('supertest');
 
 const app = require('../../app');
@@ -11,7 +10,9 @@ describe('GET /api/author', () => {
 			.expect('Content-Type', /json/)
 			.expect(200)
 
-		expect(response.body.length).toBeGreaterThan(0);
+		expect(!isNaN(response.body[1].id)).toBe(true);
+		expect(isNaN(response.body[1].surname) && typeof response.body[1].surname ==='string').toBe(true);
+		expect(isNaN(response.body[1].name) && typeof response.body[1].name ==='string').toBe(true);
 	});
 
 	it('should respond with an individual author', async () => {

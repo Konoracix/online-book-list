@@ -18,3 +18,13 @@ services:
     restart: always
     ports:
       - 8090:8080
+  smtp:
+    image: ixdotai/smtp:latest
+    ports:
+      - 127.0.0.1:25:25
+    environment:
+      - SMARTHOST_ADDRESS=smtp.sendgrid.net
+      - SMARTHOST_PORT=587
+      - SMARTHOST_USER=apikey
+      - SMARTHOST_PASSWORD=SG.blahblahblahblahWoSpQodvLakqXQfxo
+      - SMARTHOST_ALIASES=*.sendgrid.net
