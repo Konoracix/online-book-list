@@ -4,9 +4,15 @@ const queries = require('./book.queries');
 
 const router = express.Router();
 
+const mailer = require('../../lib/mailUtils')
+
 router.get('/', async (req, res) => {
 	const books = await queries.getAll();
 	res.json(books);
+})
+
+router.get('/mail', async (req, res) => {
+	res.json(await mailer.sendMail());
 })
 
 router.get('/:id', async (req, res) => {
@@ -19,14 +25,11 @@ router.put('/:id', async (req, res) => {
 	res.json(book);
 })
 
-// router.post('/', async () => {
-// 	try {
-// 		const book = await Book
-// 			.query()
-// 			.insert(req.body);
-// 	} catch (error) {
-// 		throw new Error(error);
-// 	}
-// })
+router.post('/', async (req, res) => {
+	const createdBook = await queries.post(req.body);
+	res.json(createdBook);
+})
+
+
 
 module.exports = router;

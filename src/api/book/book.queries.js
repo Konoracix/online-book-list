@@ -26,6 +26,16 @@ module.exports = {
 			})
 			.returning('*');
 		return updatedBook;
+	},
+	async post(body){
+		const createdBook =  await db(tableNames.bookList)
+			.insert({
+				title: body.title,
+				author_id: body.author_id,
+				updated_at: tableUtils.getDate()
+			})
+			.returning('*');
+		return createdBook;
 	}
 }
 
