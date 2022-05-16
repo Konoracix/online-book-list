@@ -21,6 +21,7 @@ services:
   smtp:
     image: ixdotai/smtp:latest
     ports:
+      - 127.0.0.1:25:25
       - 2525:2525
       - 587:587
     environment:
