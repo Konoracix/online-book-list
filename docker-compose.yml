@@ -30,3 +30,8 @@ services:
       - SMARTHOST_USER=apikey
       - SMARTHOST_PASSWORD=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
       - SMARTHOST_ALIASES=*.sendgrid.net
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - 1080:1080
+      - 1025:1025
