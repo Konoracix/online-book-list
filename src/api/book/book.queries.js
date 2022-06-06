@@ -25,7 +25,7 @@ module.exports = {
 				updated_at: tableUtils.getDate()
 			})
 			.returning('*');
-		return updatedBook;
+		return updatedBook[0];
 	},
 	async post(body){
 		const createdBook =  await db(tableNames.bookList)
@@ -35,8 +35,7 @@ module.exports = {
 				updated_at: tableUtils.getDate()
 			})
 			.returning('*');
-
-		return createdBook;
+			return createdBook[0];
 	}
 }
 

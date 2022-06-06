@@ -6,6 +6,8 @@ const router = express.Router();
 
 const mailer = require('../../lib/mailUtils')
 
+const author = require('../author/author.queries');
+
 router.get('/', async (req, res) => {
 	const books = await queries.getAll();
 	res.json(books);
@@ -27,7 +29,8 @@ router.put('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
 	const createdBook = await queries.post(req.body);
-	sendMail(createdBook);
+	const createdBookAuthorData = await author.get(createdBook.author_id);
+	mailer.sendMail(createdBook, createdBookAuthorData);
 	res.json(createdBook);
 })
 
