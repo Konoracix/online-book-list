@@ -35,6 +35,7 @@ module.exports = {
 				updated_at: tableUtils.getDate()
 			})
 			.returning('*');
+
 		return createdBook;
 	}
 }

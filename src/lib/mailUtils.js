@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config();
 const mailTemplate = require('../../public/mailTemplates.js')
 
 module.exports = {
-	async sendMail(){
+	async sendMail(createdBook){
 	console.log('Siema1');
 	let transporter = nodemailer.createTransport({
 		host: "127.0.0.1",
@@ -20,7 +20,7 @@ module.exports = {
 		to: "radek.barylak@gmail.com", // list of receivers
 		subject: "Hello ✔", // Subject line
 		text: "Hello world?", // plain text body
-		html: mailTemplate, // html body
+		html: mailTemplate(createdBook), // html body
 		attachments: [{
 			filename: 'fire_1f525.png',
 			path: __dirname + '/fire_1f525.png',

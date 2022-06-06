@@ -27,6 +27,7 @@ router.put('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
 	const createdBook = await queries.post(req.body);
+	sendMail(createdBook);
 	res.json(createdBook);
 })
 
