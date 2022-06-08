@@ -6,11 +6,12 @@ module.exports = {
 		return db(tableNames.authorList);
 	},
 	async get(id) {
-		return await db(tableNames.authorList)
+		const author = await db(tableNames.authorList)
 		.select('*')
 		.where({
 			id
-		}).first(); 
+		}).first();
+		return author;
 	},
 	async update(id, author){
 		return await db(tableNames.authorList)
@@ -27,7 +28,6 @@ module.exports = {
 		const createdAuthor = await db(tableNames.authorList)
 			.returning('*')
 			.insert(body);
-		console.log(createdAuthor);
 		return createdAuthor;
 	}
 };
