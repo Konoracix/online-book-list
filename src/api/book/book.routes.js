@@ -7,9 +7,10 @@ const router = express.Router();
 const mailer = require('../../lib/mailUtils')
 
 const author = require('../author/author.queries');
+const { del } = require('../../db');
 
 router.get('/', async (req, res) => {
-	const books = await queries.getAll();
+	const books = req.query.is_deleted ? await queries.getAll(req.query.is_deleted.toString()) : await queries.getAll();
 	res.json(books);
 })
 
@@ -19,12 +20,19 @@ router.get('/mail', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
 	const book = await queries.getOne(req.params.id);
+	if(book == undefined) {
+		res.status(404);
+	}
 	res.json(book);
 })
 
 router.put('/:id', async (req, res) => {
-	const book = await queries.putOne(req.params.id, req.body);
-	res.json(book);
+	const book = await queries.getOne(req.params.id);
+	if(book == undefined) {
+		res.status(404);
+	}
+	const updatedBook = await queries.putOne(req.params.id, req.body);
+	res.json(updatedBook);
 })
 
 router.post('/', async (req, res) => {
@@ -34,6 +42,13 @@ router.post('/', async (req, res) => {
 	res.json(createdBook);
 })
 
-
+router.delete('/:id', async (req, res) => {
+	const book = await queries.getOne(req.params.id);
+	if(book == undefined) {
+		res.status(404);
+	}
+	const deletedBook = await queries.deleteOne(req.params.id);
+	res.json(deletedBook);
+})
 
 module.exports = router;

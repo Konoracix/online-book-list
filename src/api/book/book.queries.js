@@ -3,8 +3,13 @@ const tableNames = require('../../constants/tableNames');
 const tableUtils = require('../../lib/tableUtils');
 
 module.exports = {
-	async getAll(){
-		return await db(tableNames.bookList);
+	async getAll(is_deleted = "false"){
+		return is_deleted=="false" ?
+			await db(tableNames.bookList)
+			.where({
+				deleted_at: null
+			}) 
+			: await db(tableNames.bookList);
 	},
 	async getOne(id){
 		return await db(tableNames.bookList)
@@ -17,12 +22,12 @@ module.exports = {
 	async putOne(id, book){
 		const updatedBook = await db(tableNames.bookList)
 			.where({
-				id
+				id,
+				deleted_at: null
 			})
-			.update({
-				title: book.title,
-				author_id: book.author_id,
-				updated_at: tableUtils.getDate()
+			.update({...book,
+				updated_at: new Date(),
+				deleted_at: null
 			})
 			.returning('*');
 		return updatedBook[0];
@@ -36,6 +41,19 @@ module.exports = {
 			})
 			.returning('*');
 			return createdBook[0];
+	},
+	async deleteOne(id){
+		const deletedBook = await db(tableNames.bookList)
+			.where({
+				id,
+				deleted_at: null
+			})
+			.update({
+				updated_at: new Date(),
+				deleted_at: new Date()
+			})
+			.returning('*');
+		return deletedBook[0];
 	}
 }
 
