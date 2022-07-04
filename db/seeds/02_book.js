@@ -10,6 +10,7 @@ exports.seed = async function(knex) {
 		return {
 			title: "historia bez cenzury 5",
 			author_id: author.id,
+			created_at: getDate(),
 			updated_at: getDate(),
 		};
 	});

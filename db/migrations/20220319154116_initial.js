@@ -17,6 +17,7 @@ exports.up = async (knex) => {
 		table.increments().notNullable();
 		stringTable(table, 'title').notNullable();
 		references(table, tableNames.authorList, 'author_id');
+		table.datetime('created_at', { useTz: false }).notNullable();
 		table.datetime('updated_at', { useTz: false }).notNullable();
 		table.datetime('deleted_at', { useTz: false }).defaultTo(null);
 	});

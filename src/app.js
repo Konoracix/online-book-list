@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const compression = require('compression');
 const helmet = require('helmet');
+const paginate = require('express-paginate');
 
 const middlewares = require('./middlewares');
 const api = require('./api/api');
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/api', api);
 
+app.use(paginate.middleware(10, 50));
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 module.exports = app;

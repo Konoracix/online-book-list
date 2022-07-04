@@ -10,8 +10,21 @@ const author = require('../author/author.queries');
 const { del } = require('../../db');
 
 router.get('/', async (req, res) => {
-	const books = req.query.is_deleted ? await queries.getAll(req.query.is_deleted.toString()) : await queries.getAll();
-	res.json(books);
+	const filterQueries = {
+		limit: req.query.limit ?? 10,
+		currentPage: req.query.current_page ?? 1,
+		isDeleted: req.query.is_deleted ? req.query.is_deleted.toString() : "false",
+		dateFrom: req.query.date_from,
+		dateTo:	req.query.date_to
+	}
+
+	const books = await queries.getAll(filterQueries);
+	res.json({
+		current_page: parseInt(filterQueries.currentPage),
+		limit: parseInt(filterQueries.limit),
+		total_pages: Math.ceil(await queries.count(filterQueries.isDeleted) / filterQueries.limit),
+		data: books
+	});
 })
 
 router.get('/mail', async (req, res) => {
