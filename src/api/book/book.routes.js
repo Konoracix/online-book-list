@@ -9,6 +9,8 @@ const mailer = require('../../lib/mailUtils')
 const author = require('../author/author.queries');
 const { del } = require('../../db');
 
+const validator = require('./book.validator');
+
 router.get('/', async (req, res) => {
 	const filterQueries = {
 		limit: req.query.limit ?? 10,
@@ -49,6 +51,13 @@ router.put('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+	const result = validator(req.body);
+	console.log(result);
+	if (result != true) {
+		res.status(400);
+		res.json(result);
+		return;
+	} 
 	const createdBook = await queries.post(req.body);
 	const createdBookAuthorData = await author.get(createdBook.author_id);
 	mailer.sendMail(createdBook, createdBookAuthorData);
