@@ -15,5 +15,5 @@ exports.seed = async function(knex) {
 		};
 	});
 	const books = await knex(tableNames.bookList).insert(booksToInsert).returning("*");
-	console.log(books);
+	// console.log(books);
 };

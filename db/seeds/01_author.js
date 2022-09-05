@@ -18,6 +18,6 @@ exports.seed = async function(knex) {
 		const createdAuthor = await knex(tableNames.authorList)
 		.insert(getAuthor())
 		.returning('*');
-		console.log('Author created:', createdAuthor);
+		// console.log('Author created:', createdAuthor);
 	}
 };
