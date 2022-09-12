@@ -49,8 +49,8 @@ exports.up = async (knex) => {
 	
 
 exports.down = async (knex) => {
-	await knex.schema.dropTable(tableNames.bookList);
-	await knex.schema.dropTable(tableNames.authorList);
-	await knex.schema.dropTable(tableNames.userList);
-	await knex.schema.dropTable(tableNames.location);
+	await knex.schema.dropTableIfExists(tableNames.userList);
+	await knex.schema.dropTableIfExists(tableNames.location);
+	await knex.schema.dropTableIfExists(tableNames.bookList);
+	await knex.schema.dropTableIfExists(tableNames.authorList);
 };

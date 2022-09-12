@@ -9,7 +9,8 @@
     "nodemon": "nodemon src/index.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
-    "seed": "knex seed:run"
+    "seed": "knex seed:run",
+    "drop-database": "knex.raw('DROP DATABASE DB_NAME;')"
   },
   "repository": {
     "type": "git",
