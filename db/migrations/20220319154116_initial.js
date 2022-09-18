@@ -35,10 +35,10 @@ exports.up = async (knex) => {
 		table.increments().notNullable();
 		stringTable(table, 'name');
 		stringTable(table, 'surname');
-		references(table, tableNames.location, 'address_id');
-		stringTable(table, 'mail');
+		references(table, tableNames.location, 'address_id', false);
+		stringTable(table, 'mail').notNullable();
 		table.integer('phone_number');
-		stringTable(table, 'password');
+		stringTable(table, 'password').notNullable();
 		
 	})
 
