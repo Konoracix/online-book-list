@@ -41,6 +41,12 @@ exports.up = async (knex) => {
 		stringTable(table, 'password').notNullable();
 		
 	})
+	await knex.schema.createTable(tableNames.accessToken, (table) => {
+		table.increments().notNullable();
+		stringTable(table, 'token');
+		table.datetime('expire_date', {useTz: false}).notNullable();
+		references(table, tableNames.userList, 'user', true);
+	})
 
 	};
 
@@ -53,4 +59,5 @@ exports.down = async (knex) => {
 	await knex.schema.dropTableIfExists(tableNames.location);
 	await knex.schema.dropTableIfExists(tableNames.bookList);
 	await knex.schema.dropTableIfExists(tableNames.authorList);
+	await knex.schema.dropTableIfExists(tableNames.accessToken);
 };
