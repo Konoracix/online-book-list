@@ -1,32 +1,31 @@
-const validator = require('validator.js').validator();
+const validator = require('validator.js');
 const is = require( 'validator.js' ).Assert;
 
-const { contentSecurityPolicy } = require('helmet');
+// const { contentSecurityPolicy } = require('helmet');
+// const { isTransaction } = require('../../db');
 const authorQueries = require('../author/author.queries')
 
 const Assert = require('validator.js').Assert;
 
 
-
+function validateId(id){
+	return isInteger(id);
+}
 
 
 function validateBook(book) {
-    console.log(Number.isInteger(5));
-    const isExtended = Assert.extend({
-        integer: Number.isInteger
-        // exists: authorQueries.exists
-    });
-
-    console.log(isExtended);
-
-    const constraint = {
-        title: is.notBlank(),
-        // author_id: [isExtended.integer(), isExtended.exists()]
-    }
-
-    console.log(book);
-    console.log(constraint);
-    return validator.validate(book, constraint);
+	var constraint = validator.constraint( {
+		title: is.notBlank(),
+		author_id: is.Required()
+	}, { strict: true });
+	if(constraint.check(book) && isInteger(book.author_id)){
+		return true
+	} 
+	return false;
 }
 
-module.exports = validateBook;
+function isInteger(number){
+	return !isNaN(parseFloat(number));
+}
+
+module.exports = {validateBook, validateId};
