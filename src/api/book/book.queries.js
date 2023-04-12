@@ -5,7 +5,7 @@ const tableUtils = require('../../lib/tableUtils');
 module.exports = {
 	async getAll(queries){
 		const data = db(tableNames.bookList).where(builder => {
-			console.log(queries)
+			// console.log(queries)
 			if(queries.isDeleted == "false"){
 				builder.andWhere("deleted_at", null);
 			}if(queries.dateTo){
@@ -30,31 +30,37 @@ module.exports = {
 	async getOne(id){
 		return await db(tableNames.bookList)
 			.where({
-				id,
-				deleted_at: null
+				id
 			})
 			.first();
 	},
 	async putOne(id, book){
+		let data = {};
+		if(book.title) data.title = book.title;		
+		if(book.author_id) data.author_id = book.author_id;
+		if(book.deleted_at == null || book.deleted_at != undefined) data.deleted_at = book.deleted_at;
 		const updatedBook = await db(tableNames.bookList)
 			.where({
-				id,
-				deleted_at: null
+				id
 			})
-			.update({...book,
+			.update({...data,
 				updated_at: new Date(),
-				deleted_at: null
 			})
 			.returning('*');
 		return updatedBook[0];
 	},
 	async post(body){
+		const author = await db(tableNames.authorList).where({id: body.author_id});
+		if(author[0] == undefined) {
+			return false;
+		}
+		const currentDate = tableUtils.getDate(); 
 		const createdBook =  await db(tableNames.bookList)
 			.insert({
 				title: body.title,
 				author_id: body.author_id,
-				created_at: tableUtils.getDate(),
-				updated_at: tableUtils.getDate()
+				created_at: currentDate,
+				updated_at: currentDate
 			})
 			.returning('*');
 			return createdBook[0];

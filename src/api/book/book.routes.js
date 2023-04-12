@@ -1,14 +1,8 @@
 const express = require('express');
-
 const queries = require('./book.queries');
-
 const router = express.Router();
-
 const mailer = require('../../lib/mailUtils')
-
 const author = require('../author/author.queries');
-const { del } = require('../../db');
-
 const validator = require('./book.validator');
 
 router.get('/', async (req, res) => {
@@ -40,7 +34,8 @@ router.get('/:id', async (req, res) => {
 	}
 	const book = await queries.getOne(req.params.id);
 	if(book == undefined) {
-		res.status(404);
+		res.status(404).send();
+		return;
 	}
 	res.json(book);
 })
@@ -51,9 +46,12 @@ router.put('/:id', async (req, res) => {
 		return;
 	}
 	const book = await queries.getOne(req.params.id);
-	console.log(book)
 	if(book == undefined) {
 		res.status(404).send();
+		return;
+	}
+	if(!(await validator.validateEditedBook(req.body))){
+		res.status(400).send()
 		return;
 	}
 	const updatedBook = await queries.putOne(req.params.id, req.body);
@@ -61,13 +59,16 @@ router.put('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-	const result = validator.validateBook(req.body);
-	if (result != true) {
-		res.status(400);
-		res.json({});
+	const result = await validator.validateCreatedBook(req.body);
+	if (result != true || !validator.validateId(req.body.author_id)) {
+		res.status(400).send();
 		return;
 	} 
 	const createdBook = await queries.post(req.body);
+	if(!createdBook){
+		res.status(404).send()
+		return;
+	}
 	const createdBookAuthorData = await author.get(createdBook.author_id);
 	mailer.sendMail(createdBook, createdBookAuthorData);
 	res.json(createdBook);
@@ -81,6 +82,7 @@ router.delete('/:id', async (req, res) => {
 	const book = await queries.getOne(req.params.id);
 	if(book == undefined) {
 		res.status(404).send();
+		return;
 	}
 	const deletedBook = await queries.deleteOne(req.params.id);
 	res.json(deletedBook);
