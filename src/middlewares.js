@@ -1,4 +1,3 @@
-const { contentSecurityPolicy } = require('helmet');
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
@@ -49,7 +48,6 @@ function authenticateJWT(req, res, next){
 					}
 
 					req.user = user;
-					console.log(new Date(user.expire_date) > new Date())
 					if(new Date(user.expire_date) > new Date()){
 						next();
 						return;

@@ -7,6 +7,7 @@ describe('GET /api/author', () => {
 	it('should respond with an array of authors', async () => {
 		const response = await supertest(app)
 			.get('/api/author')
+			.set('Authorization', `Bearer ${process.env.LONG_LIVE_JWT}`)
 			.expect('Content-Type', /json/)
 			.expect(200)
 
@@ -18,6 +19,7 @@ describe('GET /api/author', () => {
 	it('should respond with an individual author', async () => {
 		const response = await supertest(app)
 			.get('/api/author/1')
+			.set('Authorization', `Bearer ${process.env.LONG_LIVE_JWT}`)
 			.expect('Content-Type', /json/)
 			.expect(200)
 
@@ -27,6 +29,7 @@ describe('GET /api/author', () => {
 	it('should respond with 404 for a not found author', async () => {
 		const response = await supertest(app)
 			.get('/api/author/213742069')
+			.set('Authorization', `Bearer ${process.env.LONG_LIVE_JWT}`)
 			.expect('Content-Type', /json/)
 			.expect(404)
 	});

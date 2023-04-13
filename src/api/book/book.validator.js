@@ -1,31 +1,34 @@
-const validator = require('validator.js');
-const is = require( 'validator.js' ).Assert;
-
-// const { contentSecurityPolicy } = require('helmet');
-// const { isTransaction } = require('../../db');
-const authorQueries = require('../author/author.queries')
-
-const Assert = require('validator.js').Assert;
-
+const yup = require('yup');
 
 function validateId(id){
-	return isInteger(id);
+	return Number.isInteger(parseFloat(id)) && id <= 2147483647;
 }
 
-
-function validateBook(book) {
-	var constraint = validator.constraint( {
-		title: is.notBlank(),
-		author_id: is.Required()
-	}, { strict: true });
-	if(constraint.check(book) && isInteger(book.author_id)){
-		return true
-	} 
-	return false;
+async function validateCreatedBook(book) {
+		let bookSchema = yup.object({
+			title: yup.string().required(),
+			author_id: yup.number().required().positive().integer(),
+		})
+		try {
+			const result = await bookSchema.validate(book);
+			return true;
+		} catch (error) {
+			return false;
+		}
 }
 
-function isInteger(number){
-	return !isNaN(parseFloat(number));
+async function validateEditedBook(book) {
+	let bookSchema = yup.object({
+		title: yup.string(),
+		author_id: yup.number().positive().integer(),
+		deleted_at: yup.date().nullable()
+	})
+	try {
+		const result = await bookSchema.validate(book);
+		return true;
+	} catch (error) {
+		return false;
+	}
 }
 
-module.exports = {validateBook, validateId};
+module.exports = {validateCreatedBook, validateId, validateEditedBook};
