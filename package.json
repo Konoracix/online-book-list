@@ -38,6 +38,7 @@
     "nodemailer-express-handlebars": "^5.0.0",
     "nodemon": "^2.0.16",
     "pg": "^8.7.3",
+    "postgres": "^3.3.4",
     "validator.js": "^2.0.4"
   },
   "overrides": {

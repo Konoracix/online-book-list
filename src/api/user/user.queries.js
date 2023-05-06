@@ -13,4 +13,11 @@ async function createUser(userData){
 	});
 }
 
-module.exports = {findUserByMail, createUser};
+async function getUserAdress(mail) {
+	const user = await db('user_list').where({mail: mail}).first();
+	const id = user.address_id;
+	const address = await db('user_location').where({id: id}).first();
+	return address;
+}
+
+module.exports = {findUserByMail, createUser, getUserAdress};
