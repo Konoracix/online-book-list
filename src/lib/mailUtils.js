@@ -13,7 +13,6 @@ module.exports = {
 			rejectUnauthorized: false
 		}
 	});
-	console.log(createdBookAuthorData);
 	const info = await transporter.sendMail({
 		from: '"Fred Foo 👻" <xhaxykjlrojycbdvoh@nthrl.com>', // sender address
 		to: "radek.barylak@gmail.com", // list of receivers
